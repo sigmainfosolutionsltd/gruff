@@ -208,6 +208,8 @@ module Gruff
     # With Side Bars use the data label for the marker value to the left of the bar
     # Default is false
     attr_accessor :use_data_label
+
+    attr_accessor :is_black_and_white
     # If one numerical argument is given, the graph is drawn at 4/3 ratio
     # according to the given width (800 results in 800x600, 400 gives 400x300,
     # etc.).
@@ -963,6 +965,7 @@ module Gruff
 
     # Resets everything to defaults (except data).
     def reset_themes
+      @is_black_and_white = false
       @color_index = 0
       @labels_seen = {}
       @theme_options = {}

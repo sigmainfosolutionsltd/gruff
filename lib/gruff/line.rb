@@ -215,7 +215,7 @@ class Gruff::Line < Gruff::Base
       end
     end
 
-    @norm_data.each do |data_row|
+    @norm_data.each_with_index do |data_row, index|
       prev_x = prev_y = nil
 
       @one_point = contains_one_point_only?(data_row)
@@ -243,6 +243,7 @@ class Gruff::Line < Gruff::Base
         @d = @d.stroke data_row[DATA_COLOR_INDEX]
         @d = @d.fill data_row[DATA_COLOR_INDEX]
         @d = @d.stroke_opacity 1.0
+        @d = @d.stroke_dasharray(5,(5 * (index+1) )) unless !@is_black_and_white
         @d = @d.stroke_width line_width ||
                                  clip_value_if_greater_than(@columns / (@norm_data.first[DATA_VALUES_INDEX].size * 4), 5.0)
 

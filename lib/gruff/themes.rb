@@ -96,7 +96,13 @@ module Gruff
       :font_color => 'black',
       :background_colors => 'white'
     }
-    
+    # B&W printer friendly chart theme
+    BLACK_AND_WHITE = {
+      :colors => ['black'],
+      :marker_color => '#aea9a9', # Grey
+      :font_color => 'black',
+      :background_colors => 'white'
+    }    
   end
 end
 
