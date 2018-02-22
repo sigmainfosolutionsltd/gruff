@@ -245,9 +245,17 @@ class Gruff::Line < Gruff::Base
         @d = @d.fill data_row[DATA_COLOR_INDEX]
         @d = @d.stroke_opacity 1.0
         
-        @d = @d.stroke_dasharray(15,(10 * (index+1) )) unless !@is_black_and_white
+        if row_index > 0
+          unless !@is_black_and_white
+            if (row_index == 2)
+              @d = @d.stroke_dasharray(5,5)
+            else
+              @d = @d.stroke_dasharray(20/ (row_index),(5 * (row_index+1) ))
+            end
+          end
+        end
         @d = @d.stroke_width line_width ||
-                                 clip_value_if_greater_than(@columns / (@norm_data.first[DATA_VALUES_INDEX].size * 4), 5.0)
+                                   clip_value_if_greater_than(@columns / (@norm_data.first[DATA_VALUES_INDEX].size * 4), 5.0)
 
         circle_radius = dot_radius ||
             clip_value_if_greater_than(@columns / (@norm_data.first[DATA_VALUES_INDEX].size * 2.5), 5.0)

@@ -742,7 +742,7 @@ module Gruff
 
       @legend_labels = @data.collect { |item| item[DATA_LABEL_INDEX] }
 
-      legend_square_width = @legend_box_size # small square with color of this item
+      legend_square_width = 40.00 # small square with color of this item
 
       # May fix legend drawing problem at small sizes
       @d.font = @font if @font
@@ -751,7 +751,7 @@ module Gruff
       label_widths = [[]] # Used to calculate line wrap
       @legend_labels.each do |label|
         metrics = @d.get_type_metrics(@base_image, label.to_s)
-        label_width = metrics.width + legend_square_width * 2.7
+        label_width = legend_square_width * 2.7
         label_widths.last.push label_width
 
         if sum(label_widths.last) > (@raw_columns * 0.9)
@@ -759,7 +759,7 @@ module Gruff
         end
       end
 
-      current_x_offset = center(sum(label_widths.first))
+      current_x_offset = center(sum(label_widths.first)) - 120
       current_y_offset = @legend_at_bottom ? @graph_height + title_margin : (@hide_title ?
           @top_margin + title_margin :
           @top_margin + title_margin + @title_caps_height)
@@ -780,11 +780,26 @@ module Gruff
 
         # Now draw box with color of this dataset
         @d = @d.stroke('transparent')
-        @d = @d.fill @data[index][DATA_COLOR_INDEX]
-        @d = @d.rectangle(current_x_offset,
-                          current_y_offset - legend_square_width / 2.0,
+        @d = @d.stroke_width(5)
+        @d = @d.stroke_opacity 1.0
+        @d = @d.fill(@font_color)
+        
+        if index > 0
+          unless !@is_black_and_white
+            if (index == 2)
+              @d = @d.stroke_dasharray(5,5)
+            else
+              @d = @d.stroke_dasharray(20/ (index),(5 * (index+1) ))
+            end
+          end
+        end
+        @d = @d.line(current_x_offset,
+                          current_y_offset ,
                           current_x_offset + legend_square_width,
-                          current_y_offset + legend_square_width / 2.0)
+                          current_y_offset )
+        
+        @d = @d.stroke_dasharray()
+        @d = @d.stroke_width(1)
 
         @d.pointsize = @legend_font_size
         metrics = @d.get_type_metrics(@base_image, legend_label.to_s)
