@@ -245,7 +245,7 @@ class Gruff::Line < Gruff::Base
         @d = @d.fill data_row[DATA_COLOR_INDEX]
         @d = @d.stroke_opacity 1.0
         
-        @d = @d.stroke_dasharray(5,(5 * (row_index+1) )) unless !@is_black_and_white
+        @d = @d.stroke_dasharray(15,(10 * (index+1) )) unless !@is_black_and_white
         @d = @d.stroke_width line_width ||
                                  clip_value_if_greater_than(@columns / (@norm_data.first[DATA_VALUES_INDEX].size * 4), 5.0)
 
